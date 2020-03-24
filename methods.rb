@@ -78,5 +78,18 @@ module Enumerable # :nodoc:
       result
     end
   
-    
+    # Returns the cumulative results of the operation using all items
+    # A starting value is provided as argument
+    def my_inject(init)
+      my_each do |i|
+        init = yield(init, i)
+      end
+      init
+    end
   end
+end
+
+# Method created to test my_inject by passing array as argument when called
+def multiply_els(arr)
+    p arr.my_inject(1) { |r, i| r * i }
+end
