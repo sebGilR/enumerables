@@ -28,5 +28,14 @@ module Enumerable # :nodoc:
       end
     end
   
+    # Returns true or false. All items must meet condition
+    def my_all?
+      result = true
+      my_each do |item|
+        result = false unless yield(item)
+      end
+      result
+    end
+  
     
   end
