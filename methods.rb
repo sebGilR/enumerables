@@ -44,5 +44,14 @@ module Enumerable # :nodoc:
       result
     end
   
+    # Returns true or false. At least one item must meet condition
+    def my_none?
+      result = true
+      my_each do |item|
+        result = false if yield(item)
+      end
+      result
+    end
+  
     
   end
