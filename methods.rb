@@ -67,5 +67,16 @@ module Enumerable # :nodoc:
       counter
     end
   
+    # Returns a new array with the results of changes to each item
+    def my_map(proc = nil)
+      result = []
+      if proc.nil?
+        my_each { |item| result << yield(item) }
+      else
+        my_each { |item| result << proc.call(item) }
+      end
+      result
+    end
+  
     
   end
