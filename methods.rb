@@ -53,5 +53,19 @@ module Enumerable # :nodoc:
       result
     end
   
+    # Returns true or false. At least one item must meet condition
+    def my_count(elem = nil)
+      counter = 0
+  
+      if block_given?
+        my_each { |item| counter += 1 if yield(item) }
+      elsif elem
+        my_each { |item| counter += 1 if item == elem }
+      else
+        counter = size
+      end
+      counter
+    end
+  
     
   end
