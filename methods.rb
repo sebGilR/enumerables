@@ -11,5 +11,22 @@ module Enumerable # :nodoc:
       end
     end
   
-
+    # Returns item + index in array
+    def my_each_with_index
+      i = 0
+      while i < size
+        yield(self[i], i)
+        i += 1
+      end
+    end
+  
+    # Returns items that pass the test
+    def my_select
+      result = []
+      my_each do |item|
+        result << item if yield(item)
+      end
+    end
+  
+    
   end
