@@ -37,5 +37,12 @@ module Enumerable # :nodoc:
       result
     end
   
+    # Returns true or false. At least one item must meet condition
+    def my_any?
+      result = false
+      my_each { |item| result = true if yield(item) }
+      result
+    end
+  
     
   end
