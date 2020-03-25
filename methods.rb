@@ -29,10 +29,11 @@ module Enumerable # :nodoc:
 
 	# Returns items that pass the test
 	def my_select
+		return to_enum(:my_select) unless block_given?
+
 		result = []
-		my_each do |item|
-			result << item if yield(item)
-		end
+		my_each { |item| result << item if yield(item) }
+		result
 	end
 
 	# Returns true or false. All items must meet condition
@@ -49,25 +50,27 @@ module Enumerable # :nodoc:
 	end
 
 	# Returns true or false. At least one item must meet condition
-	def my_any?
+	def my_any?(*arg)
 		result = false
-		my_each { |item| result = true if yield(item) }
-		result
-	end
-
-	# Returns true or false. At least one item must meet condition
-	def my_none?
-		result = true
-		my_each do |item|
-			result = false if yield(item)
+		if !arg[0].nil?
+			my_each { |i| result = true if arg[0] === i }
+		elsif !block_given?
+			my_each { |item| result = true if item}
+		else
+			my_each { |item| result = true if yield(item) }
 		end
 		result
 	end
 
 	# Returns true or false. At least one item must meet condition
+	def my_none?(arg = nil, &block)
+		!my_any?(arg, &block)
+	end
+
+	# Returns true or false. At least one item must meet condition
 	def my_count(elem = nil)
 		counter = 0
-
+		
 		if block_given?
 			my_each { |item| counter += 1 if yield(item) }
 		elsif elem
@@ -80,6 +83,8 @@ module Enumerable # :nodoc:
 
 	# Returns a new array with the results of changes to each item
 	def my_map(proc = nil)
+		return to_enum(:my_map) unless block_given?
+
 		result = []
 		if proc.nil?
 			my_each { |item| result << yield(item) }
@@ -91,11 +96,17 @@ module Enumerable # :nodoc:
 
 	# Returns the cumulative results of the operation using all items
 	# A starting value is provided as argument
-	def my_inject(init)
-		my_each do |i|
-			init = yield(init, i)
+	def my_inject(*arg)
+
+		if arg[0].is_a? Integer
+			if arg[1].is_a? Symbol
+				op = arg[1]
+				my_each { |item| arg[0] = arg[0].op item}
+			end
+		else
+			my_each { |i| arg1 = yield(arg1, i) }
 		end
-		init
+		arg[0]
 	end
 end
 
@@ -104,4 +115,5 @@ def multiply_els(arr)
     p arr.my_inject(1) { |r, i| r * i }
 end
 
-p [3,3,3,3].my_all?(3)
+block = proc { |num| num < 24 }
+p [23,13,12,43].my_select(&block)
