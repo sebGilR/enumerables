@@ -115,4 +115,3 @@ end
 def multiply_els(arr)
   p arr.my_inject(1) { |r, i| r * i }
 end
-p (1..5).my_inject(4) { |prod, n| prod * n }
