@@ -93,6 +93,7 @@ module Enumerable # :nodoc:
   # A starting value is provided as argument
   def my_inject(*arg)
     my_each { |i| arg[0] = yield(arg[0], i) }
+    arg[0]
   end
 end
 
