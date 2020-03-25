@@ -3,7 +3,8 @@ module Enumerable # :nodoc:
   # Returns each item individually
 
   def my_each
-    to_enum(:my_each) unless block_given?
+    return to_enum(:my_each) unless block_given?
+
     i = 0
     while i < length
       yield(self[i])
@@ -24,7 +25,7 @@ module Enumerable # :nodoc:
 
   # Returns items that pass the test
   def my_select
-    to_enum(:my_select) unless block_given?
+    return to_enum(:my_select) unless block_given?
 
     result = []
     my_each { |item| result << item if yield(item) }
