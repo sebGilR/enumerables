@@ -3,11 +3,16 @@
 module Enumerable # :nodoc:
 	# frozen_string_literal: true
 	# Returns each item individually
+	
 	def my_each
-		i = 0
-		while i < length
-			yield(i)
-			i += 1
+		if block_given?
+			i = 0
+			while i < length
+				yield(self[i])
+				i += 1
+			end
+		else
+			return to_enum(:my_each)
 		end
 	end
 
