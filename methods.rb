@@ -92,8 +92,22 @@ module Enumerable # :nodoc:
   # Returns the cumulative results of the operation using all items
   # A starting value is provided as argument
   def my_inject(*arg)
-    my_each { |i| arg[0] = yield(arg[0], i) }
-    arg[0]
+    arr = is_a?(Array) ? self : to_a
+    result = arg[0] if arg[0].is_a? Integer
+
+    if arg[0].is_a?(Symbol) || arg[0].is_a?(String)
+      sym = arg[0]
+    elsif arg[0].is_a?(Integer)
+      sym = arg[1] if arg[1].is_a?(Symbol) || arg[1].is_a?(String)
+    end
+
+    if sym
+      arr.my_each { |item| result = result ? result.send(sym, item) : item }
+    else
+      arr.my_each { |item| result = result ? yield(result, item) : item }
+    end
+
+    result
   end
 end
 
@@ -101,3 +115,4 @@ end
 def multiply_els(arr)
   p arr.my_inject(1) { |r, i| r * i }
 end
+p (1..5).my_inject(4) { |prod, n| prod * n }
