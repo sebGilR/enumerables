@@ -18,6 +18,8 @@ module Enumerable # :nodoc:
 
 	# Returns item + index in array
 	def my_each_with_index
+		return to_enum(:my_each) unless block_given?
+
 		i = 0
 		while i < size
 			yield(self[i], i)
@@ -34,10 +36,14 @@ module Enumerable # :nodoc:
 	end
 
 	# Returns true or false. All items must meet condition
-	def my_all?
+	def my_all?(*arg)
 		result = true
-		my_each do |item|
-			result = false unless yield(item)
+		if !arg[0].nil?
+			my_each { |i| result = false unless arg[0] === i }
+		elsif !block_given?
+			my_each { |i| result = false unless i }
+		else
+			my_each { |i| result = false unless yield(i) }
 		end
 		result
 	end
@@ -97,3 +103,5 @@ end
 def multiply_els(arr)
     p arr.my_inject(1) { |r, i| r * i }
 end
+
+p [3,3,3,3].my_all?(3)
