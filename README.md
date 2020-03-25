@@ -21,7 +21,7 @@
 
 ## Live Demo
 
-[![Run on Repl.it]](https://repl.it/@sebGilR/enumerables)
+[Run on Repl.it](https://repl.it/github/sebGilR/enumerables)
 
 ## Authors
 
