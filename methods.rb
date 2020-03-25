@@ -1,92 +1,91 @@
 # rubocop:disable Style/CaseEquality
 
 module Enumerable # :nodoc:
-    # frozen_string_literal: true
-    # Returns each item individually
-    def my_each
-      i = 0
-      while i < length
-        yield(i)
-        i += 1
-      end
-    end
-  
-    # Returns item + index in array
-    def my_each_with_index
-      i = 0
-      while i < size
-        yield(self[i], i)
-        i += 1
-      end
-    end
-  
-    # Returns items that pass the test
-    def my_select
-      result = []
-      my_each do |item|
-        result << item if yield(item)
-      end
-    end
-  
-    # Returns true or false. All items must meet condition
-    def my_all?
-      result = true
-      my_each do |item|
-        result = false unless yield(item)
-      end
-      result
-    end
-  
-    # Returns true or false. At least one item must meet condition
-    def my_any?
-      result = false
-      my_each { |item| result = true if yield(item) }
-      result
-    end
-  
-    # Returns true or false. At least one item must meet condition
-    def my_none?
-      result = true
-      my_each do |item|
-        result = false if yield(item)
-      end
-      result
-    end
-  
-    # Returns true or false. At least one item must meet condition
-    def my_count(elem = nil)
-      counter = 0
-  
-      if block_given?
-        my_each { |item| counter += 1 if yield(item) }
-      elsif elem
-        my_each { |item| counter += 1 if item == elem }
-      else
-        counter = size
-      end
-      counter
-    end
-  
-    # Returns a new array with the results of changes to each item
-    def my_map(proc = nil)
-      result = []
-      if proc.nil?
-        my_each { |item| result << yield(item) }
-      else
-        my_each { |item| result << proc.call(item) }
-      end
-      result
-    end
-  
-    # Returns the cumulative results of the operation using all items
-    # A starting value is provided as argument
-    def my_inject(init)
-      my_each do |i|
-        init = yield(init, i)
-      end
-      init
-    end
-  end
+	# frozen_string_literal: true
+	# Returns each item individually
+	def my_each
+		i = 0
+		while i < length
+			yield(i)
+			i += 1
+		end
+	end
+
+	# Returns item + index in array
+	def my_each_with_index
+		i = 0
+		while i < size
+			yield(self[i], i)
+			i += 1
+		end
+	end
+
+	# Returns items that pass the test
+	def my_select
+		result = []
+		my_each do |item|
+			result << item if yield(item)
+		end
+	end
+
+	# Returns true or false. All items must meet condition
+	def my_all?
+		result = true
+		my_each do |item|
+			result = false unless yield(item)
+		end
+		result
+	end
+
+	# Returns true or false. At least one item must meet condition
+	def my_any?
+		result = false
+		my_each { |item| result = true if yield(item) }
+		result
+	end
+
+	# Returns true or false. At least one item must meet condition
+	def my_none?
+		result = true
+		my_each do |item|
+			result = false if yield(item)
+		end
+		result
+	end
+
+	# Returns true or false. At least one item must meet condition
+	def my_count(elem = nil)
+		counter = 0
+
+		if block_given?
+			my_each { |item| counter += 1 if yield(item) }
+		elsif elem
+			my_each { |item| counter += 1 if item == elem }
+		else
+			counter = size
+		end
+		counter
+	end
+
+	# Returns a new array with the results of changes to each item
+	def my_map(proc = nil)
+		result = []
+		if proc.nil?
+			my_each { |item| result << yield(item) }
+		else
+			my_each { |item| result << proc.call(item) }
+		end
+		result
+	end
+
+	# Returns the cumulative results of the operation using all items
+	# A starting value is provided as argument
+	def my_inject(init)
+		my_each do |i|
+			init = yield(init, i)
+		end
+		init
+	end
 end
 
 # Method created to test my_inject by passing array as argument when called
