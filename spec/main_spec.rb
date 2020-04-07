@@ -29,4 +29,14 @@ RSpec.describe 'Enumerable' do
       expect(numbers.my_each_with_index).to be_a(Enumerator)
     end
   end
+
+  describe '.my_select' do
+    it 'returns items that return true to the block' do
+      expect(numbers.my_select { |n| n > 2 }).to eql(numbers.select { |n| n > 2 })
+    end
+
+    it 'returns Enumerator when not passed a block' do
+      expect(numbers.my_select).to be_a(Enumerator)
+    end
+  end
 end

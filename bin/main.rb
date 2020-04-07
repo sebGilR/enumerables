@@ -36,7 +36,7 @@ module Enumerable # :nodoc:
   def my_all?(*arg)
     result = true
     if !arg[0].nil?
-      if arg[0].is_a? Regexp
+      if arg[0].is_a? Reg exp
         my_each { |i| result = false unless i.to_s[arg[0]]}
       else
         my_each { |i| result = false unless arg[0] === i } # rubocop:disable Style/CaseEquality
