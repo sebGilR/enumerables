@@ -1,16 +1,16 @@
 require './bin/main'
 
-RSpec.describe 'Enumerable' do
-  let(:numbers) {[1, 2, 3, 4]}
-  let(:numbers_nil) {[1, 2, 3, 4, nil]}
-  let(:array_str){%w[hola 3244 adios valida 344 _er tambien]}
+RSpec.describe Enumerable do
+  let(:numbers) { [1, 2, 3, 4] }
+  let(:numbers_nil) { [1, 2, 3, 4, nil] }
+  let(:array_str) { %w[hola 3244 adios valida 344 _er tambien] }
 
   describe '.my_each' do
     it 'returns each item with an operation applied' do
       result = []
-      numbers.my_each { |n| result << n * 2}
+      numbers.my_each { |n| result << n * 2 }
       result2 = []
-      numbers.each { |n| result2 << n * 2}
+      numbers.each { |n| result2 << n * 2 }
       expect(result).to eql(result2)
     end
 
@@ -20,10 +20,10 @@ RSpec.describe 'Enumerable' do
   end
 
   describe '.my_each_with_index' do
-    it '' do
+    it 'returns each item with its index' do
       result = []
-      numbers.my_each_with_index { |n, i| result << "#{n}: #{i}"}
-      expect(result).to eql(["1: 0", "2: 1", "3: 2", "4: 3"])
+      numbers.my_each_with_index { |n, i| result << "#{n}: #{i}" }
+      expect(result).to eql(['1: 0', '2: 1', '3: 2', '4: 3'])
     end
 
     it 'returns Enumerator when not passed a block' do
@@ -33,7 +33,8 @@ RSpec.describe 'Enumerable' do
 
   describe '.my_select' do
     it 'returns items that return true to the block' do
-      expect(numbers.my_select { |n| n > 2 }).to eql(numbers.select { |n| n > 2 })
+      original_output = numbers.select { |n| n > 2 }
+      expect(numbers.my_select { |n| n > 2 }).to eql(original_output)
     end
 
     it 'returns Enumerator when not passed a block' do
@@ -84,7 +85,7 @@ RSpec.describe 'Enumerable' do
       end
 
       it 'will return true if any element is of a given class' do
-        expect(['s','s',3,'s'].my_any?(Integer)).to eq(true)
+        expect(['s', 's', 3, 's'].my_any?(Integer)).to eq(true)
       end
 
       it 'will return true any item match regular expression' do
@@ -110,7 +111,7 @@ RSpec.describe 'Enumerable' do
       end
 
       it 'will return true if any element is of a given class' do
-        expect(['s','s','3','s'].my_none?(Numeric)).to eq(true)
+        expect(%w[s s 3 s].my_none?(Numeric)).to eq(true)
       end
 
       it 'will return true if none if the items match regular expression' do
@@ -121,21 +122,22 @@ RSpec.describe 'Enumerable' do
 
   describe '.my_count' do
     context 'block_given' do
-      it 'returns the number of elements that meet the condition in the block' do
-        expect(numbers.my_count { |n| n > 2 }).to eql(numbers.count { |n| n > 2 })
+      it 'returns number of items that meet the condition in the block' do
+        original_output = numbers.count { |n| n > 2 }
+        expect(numbers.my_count { |n| n > 2 }).to eql(original_output)
       end
     end
 
     context '!block_given' do
-      it 'returns the number of elements that match the one passed as argument' do
+      it 'returns the number of elements that match a passed as argument' do
         expect(numbers.my_count(2)).to eql(numbers.count(2))
       end
     end
   end
 
   describe '.my_map' do
-    it 'will return a new array with the given operation applied to each item' do
-      expect(numbers.my_map{|n| n<3 }).to eq(numbers.map{|n| n< 3})
+    it 'returns a new array with the given operation applied to each item' do
+      expect(numbers.my_map { |n| n < 3 }).to eq(numbers.map { |n| n < 3 })
     end
     it 'returns Enumerator when not passed a block' do
       expect(numbers.my_map).to be_a(Enumerator)
@@ -144,26 +146,31 @@ RSpec.describe 'Enumerable' do
 
   describe '.my_inject' do
     context 'only a symbol passed as argument' do
-      it 'returns the cumulative result of the operation applied to all the elements' do
+      it 'returns the cumulative result of the operation\
+          applied to all the elements' do
         expect((5..10).my_inject(:*)).to eql((5..10).inject(:*))
       end
     end
 
     context 'symbol and initial value passed as argument' do
-      it 'returns the cumulative result of the operation applied to all the elements, given a initial value' do
-        expect((5..10).my_inject(2, :*)).to eql((5..10).inject(2, :*))
+      it 'returns acumulation of the operation on all the\
+          elements, with initial value' do
+        original_output = (5..10).inject(2, :*)
+        expect((5..10).my_inject(2, :*)).to eql(original_output)
       end
     end
 
     context 'only block passed' do
       it 'returns cumulative result of operations on all items' do
-        expect(numbers.my_inject { |r, i| r * i }).to eql(numbers.inject { |r, i| r * i })
+        original_output = numbers.inject { |r, i| r * i }
+        expect(numbers.my_inject { |r, i| r * i }).to eql(original_output)
       end
     end
 
     context 'initial value and block passed' do
-      it 'returns cumulative result of operations on all items, given a initial value' do
-        expect(numbers.my_inject(2) { |r, i| r * i }).to eql(numbers.inject(2) { |r, i| r * i })
+      it 'returns acumulation of operations on all items, with initial value' do
+        original_output = numbers.inject(2) { |r, i| r * i }
+        expect(numbers.my_inject(2) { |r, i| r * i }).to eql(original_output)
       end
     end
   end
