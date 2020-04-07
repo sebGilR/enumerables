@@ -132,4 +132,30 @@ RSpec.describe 'Enumerable' do
       end
     end
   end
+
+  describe '.my_inject' do
+    context 'only a symbol passed as argument' do
+      it 'returns the cumulative result of the operation applied to all the elements' do
+        expect((5..10).my_inject(:*)).to eql((5..10).inject(:*))
+      end
+    end
+
+    context 'symbol and initial value passed as argument' do
+      it 'returns the cumulative result of the operation applied to all the elements, given a initial value' do
+        expect((5..10).my_inject(2, :*)).to eql((5..10).inject(2, :*))
+      end
+    end
+
+    context 'only block passed' do
+      it 'returns cumulative result of operations on all items' do
+        expect(numbers.my_inject { |r, i| r * i }).to eql(numbers.inject { |r, i| r * i })
+      end
+    end
+
+    context 'initial value and block passed' do
+      it 'returns cumulative result of operations on all items, given a initial value' do
+        expect(numbers.my_inject(2) { |r, i| r * i }).to eql(numbers.inject(2) { |r, i| r * i })
+      end
+    end
+  end
 end
