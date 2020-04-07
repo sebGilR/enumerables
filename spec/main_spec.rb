@@ -133,6 +133,15 @@ RSpec.describe 'Enumerable' do
     end
   end
 
+  describe '.my_map' do
+    it 'will return a new array with the given operation applied to each item' do
+      expect(numbers.my_map{|n| n<3 }).to eq(numbers.map{|n| n< 3})
+    end
+    it 'returns Enumerator when not passed a block' do
+      expect(numbers.my_map).to be_a(Enumerator)
+    end
+  end
+
   describe '.my_inject' do
     context 'only a symbol passed as argument' do
       it 'returns the cumulative result of the operation applied to all the elements' do
