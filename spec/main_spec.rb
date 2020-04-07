@@ -118,4 +118,18 @@ RSpec.describe 'Enumerable' do
       end
     end
   end
+
+  describe '.my_count' do
+    context 'block_given' do
+      it 'returns the number of elements that meet the condition in the block' do
+        expect(numbers.my_count { |n| n > 2 }).to eql(numbers.count { |n| n > 2 })
+      end
+    end
+
+    context '!block_given' do
+      it 'returns the number of elements that match the one passed as argument' do
+        expect(numbers.my_count(2)).to eql(numbers.count(2))
+      end
+    end
+  end
 end
