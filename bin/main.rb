@@ -116,3 +116,6 @@ end
 def multiply_els(arr)
   p arr.my_inject(1) { |r, i| r * i }
 end
+
+
+p [1, 2, 3, 4].my_each.class
