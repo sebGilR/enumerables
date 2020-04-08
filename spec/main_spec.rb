@@ -58,12 +58,24 @@ RSpec.describe Enumerable do
         expect(numbers.my_all?).to be_truthy
       end
 
+      it 'will return false if some items are  nil or false' do
+        expect(numbers_nil.my_all?).to be_falsy
+      end
+
       it 'will return true if all the elements are of a given class' do
         expect(numbers.my_all?(Integer)).to eq(true)
       end
 
+      it 'will return false if not all the elements are of a given class' do
+        expect(numbers_nil.my_all?(Integer)).to eq(false)
+      end
+
       it 'will return true if all items match regular expression' do
         expect(numbers.my_all?(/\d/)).to eq(true)
+      end
+
+      it 'will return false if not all items match regular expression' do
+        expect(array_str.my_all?(/\d/)).to eq(false)
       end
     end
   end
@@ -84,12 +96,24 @@ RSpec.describe Enumerable do
         expect(numbers_nil.my_any?).to eql(true)
       end
 
+      it 'will return false if none the items is truthy' do
+        expect([nil, false].my_any?).to eql(false)
+      end
+
       it 'will return true if any element is of a given class' do
         expect(['s', 's', 3, 's'].my_any?(Integer)).to eq(true)
       end
 
-      it 'will return true any item match regular expression' do
+      it 'will return false if none element is of a given class' do
+        expect(%w[s s 3 s].my_any?(Integer)).to eq(false)
+      end
+
+      it 'will return true if any item match regular expression' do
         expect(array_str.my_any?(/\d/)).to eq(true)
+      end
+
+      it 'will return false if none item match regular expression' do
+        expect(array_str.my_any?(/\+/)).to eq(false)
       end
     end
   end
@@ -110,12 +134,26 @@ RSpec.describe Enumerable do
         expect([nil, false].my_none?).to eql(true)
       end
 
-      it 'will return true if any element is of a given class' do
+      it 'will return false if any of the items is truthy' do
+        expect([nil, false, 3, 'hello'].my_none?).to eql(false)
+      end
+
+      it 'will return true if none of the element\
+          is of a given class' do
         expect(%w[s s 3 s].my_none?(Numeric)).to eq(true)
+      end
+
+      it 'will return false if any element is of a given class' do
+        expect(numbers_nil.my_none?(Numeric)).to eq(false)
       end
 
       it 'will return true if none if the items match regular expression' do
         expect(numbers.my_none?(/s/)).to eq(true)
+      end
+
+      it 'will return false if any of the items doesn not\
+          match regular expression' do
+        expect(%w[s s 3 s].my_none?(/s/)).to eq(false)
       end
     end
   end
