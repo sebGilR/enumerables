@@ -1,6 +1,7 @@
 module Enumerable # :nodoc:
-  # frozen_string_literal: true
   # Returns each item individually
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
 
   def my_each
     return to_enum(:my_each) unless block_given?
@@ -36,7 +37,11 @@ module Enumerable # :nodoc:
   def my_all?(*arg)
     result = true
     if !arg[0].nil?
-      my_each { |i| result = false unless arg[0] === i } # rubocop:disable Style/CaseEquality
+      if arg[0].is_a? Regexp
+        my_each { |i| result = false unless i.to_s[arg[0]] }
+      else
+        my_each { |i| result = false unless arg[0] === i } # rubocop:disable Style/CaseEquality
+      end
     elsif !block_given?
       my_each { |i| result = false unless i }
     else
@@ -116,3 +121,6 @@ end
 def multiply_els(arr)
   p arr.my_inject(1) { |r, i| r * i }
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
